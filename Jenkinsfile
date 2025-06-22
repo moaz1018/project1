@@ -4,7 +4,7 @@
     }
     stages {
         stage('Clone Repository') {
-            steps { git 'https://github.com/YourUsername/YourPythonRepo.git' }
+            steps { git 'https://github.com/moaz1018/project1.git' }
         }
         stage('Install Streamlit') {
             steps { sh 'pip install streamlit' }
