@@ -1,0 +1,68 @@
+pipeline {
+    agent any
+
+    environment {
+        PYTHON = 'python3'
+    }
+
+    stages {
+
+        stage('Install Python 3') {
+            steps {
+                sh '''
+                    sudo apt update
+                    sudo apt install -y python3 python3-venv python3-pip
+                '''
+            }
+        }
+
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/moaz1018/project1.git'
+            }
+        }
+
+        stage('Check Python Version') {
+            steps {
+                sh "${env.PYTHON} --version"
+            }
+        }
+
+        stage('Install Streamlit') {
+            steps {
+                sh '''
+                    python3 -m venv venv
+                    . venv/bin/activate
+                    python -m pip install --upgrade pip
+                    python -m pip install streamlit
+                '''
+            }
+        }
+
+        stage('Show Streamlit Version') {
+            steps {
+                sh '''
+                    . venv/bin/activate
+                    streamlit --version
+                '''
+            }
+        }
+
+        stage('Run Streamlit App') {
+            steps {
+                sh '''
+                    nohup ./venv/bin/python -m streamlit run main.py --server.headless true --server.port=8501 > streamlit.log 2>&1 &
+                '''
+            }
+        }
+
+        stage('Access Info') {
+            steps {
+                script {
+                    def ip = sh(script: "curl -s http://checkip.amazonaws.com", returnStdout: true).trim()
+                    echo "🌐 Access your Streamlit app at: http://${ip}:8501"
+                }
+            }
+        }
+    }
+}
