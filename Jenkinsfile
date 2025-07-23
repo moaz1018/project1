@@ -6,11 +6,11 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                git branch: 'main', 'https://github.com/moaz1018/project1.git'
-            }
-        }
+       stage('Clone Repository') {
+    steps {
+        git branch: 'main', url: 'https://github.com/moaz1018/project1.git'
+    }
+}
 
         stage('Check Python Version') {
             steps {
