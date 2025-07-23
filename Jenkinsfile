@@ -31,16 +31,23 @@ pipeline {
 
 
         stage('Show Streamlit Version') {
-            steps {
-                sh "${env.PYTHON} -m streamlit --version"
-            }
-        }
+    steps {
+        sh '''
+            . venv/bin/activate
+            streamlit --version
+        '''
+    }
+}
+
 
         stage('Run Streamlit App') {
-            steps {
-                sh "nohup ${env.PYTHON} -m streamlit run main.py --server.headless true --server.port=8501 &"
-            }
-        }
+    steps {
+        sh '''
+            nohup ./venv/bin/python -m streamlit run main.py --server.headless true --server.port=8501 > streamlit.log 2>&1 &
+        '''
+    }
+}
+
 
         stage('Access Info') {
             steps {
