@@ -19,11 +19,16 @@ pipeline {
         }
 
         stage('Install Streamlit') {
-            steps {
-                sh "${env.PYTHON} -m pip install --upgrade pip"
-                sh "${env.PYTHON} -m pip install streamlit"
-            }
-        }
+    steps {
+        sh '''
+            python3 -m venv venv
+            . venv/bin/activate
+            python -m pip install --upgrade pip
+            python -m pip install streamlit
+        '''
+    }
+}
+
 
         stage('Show Streamlit Version') {
             steps {
