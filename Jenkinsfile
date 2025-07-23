@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/moaz1018/project1.git'
+                git branch: 'main', 'https://github.com/moaz1018/project1.git'
             }
         }
 
